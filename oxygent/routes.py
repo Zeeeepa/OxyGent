@@ -36,10 +36,14 @@ from .db_factory import DBFactory
 from .oxy_factory import OxyFactory
 from .schemas import OxyRequest, WebResponse
 from .utils.data_utils import add_post_and_child_node_ids
+from .api import api_router
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+# Include the API router
+router.include_router(api_router)
 
 
 # Basic route to redirect to the web interface
@@ -48,10 +52,19 @@ def read_root():
     """Redirect the client to the bundled web front-end.
 
     Returns:
-        fastapi.responses.RedirectResponse: HTTP 307 redirect to
-        ``./web/index.html`` that ships with the service UI.
+        RedirectResponse: A redirect to the web interface.
     """
-    return RedirectResponse(url="./web/index.html")
+    return RedirectResponse(url="/web/index.html")
+
+# Route to the management interface
+@router.get("/management")
+def management_interface():
+    """Redirect the client to the management interface.
+
+    Returns:
+        RedirectResponse: A redirect to the management interface.
+    """
+    return RedirectResponse(url="/web/management/index.html")
 
 
 @router.get("/check_alive")

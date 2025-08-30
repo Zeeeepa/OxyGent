@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OxyGent Management Interface</title>
+    <link rel="shortcut icon" href="../image/group-favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="./css/management.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script src="./js/management.js"></script>
+    <script src="./js/agents.js"></script>
+    <script src="./js/tools.js"></script>
+    <script src="./js/workflows.js"></script>
+    <script src="./js/system.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <img class="header-left-img" src="../image/group-favicon.png" alt="OxyGent Logo">
+            <h1>OxyGent Management</h1>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <span id="username">Admin</span>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item active" data-target="dashboard">
+                    <img src="./img/dashboard.svg" alt="Dashboard">
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-target="agents">
+                    <img src="./img/agents.svg" alt="Agents">
+                    <span>Agents</span>
+                </li>
+                <li class="nav-item" data-target="tools">
+                    <img src="./img/tools.svg" alt="Tools">
+                    <span>Tools</span>
+                </li>
+                <li class="nav-item" data-target="workflows">
+                    <img src="./img/workflows.svg" alt="Workflows">
+                    <span>Workflows</span>
+                </li>
+                <li class="nav-item" data-target="mas">
+                    <img src="./img/mas.svg" alt="MAS">
+                    <span>MAS Instances</span>
+                </li>
+                <li class="nav-item" data-target="system">
+                    <img src="./img/system.svg" alt="System">
+                    <span>System</span>
+                </li>
+                <li class="nav-item" data-target="docs">
+                    <img src="./img/docs.svg" alt="Documentation">
+                    <span>Documentation</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <!-- Dashboard Section -->
+            <div class="section active" id="dashboard-section">
+                <h2>Dashboard</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>Agents</h3>
+                        <div class="stat-value" id="agent-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Tools</h3>
+                        <div class="stat-value" id="tool-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Workflows</h3>
+                        <div class="stat-value" id="workflow-count">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>MAS Instances</h3>
+                        <div class="stat-value" id="mas-count">0</div>
+                    </div>
+                </div>
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Agent Activity</h3>
+                        <div class="chart" id="agent-activity-chart">
+                            <!-- Chart will be rendered here -->
+                            <div class="placeholder-chart">Agent Activity Chart</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Tool Usage</h3>
+                        <div class="chart" id="tool-usage-chart">
+                            <!-- Chart will be rendered here -->
+                            <div class="placeholder-chart">Tool Usage Chart</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activity-list">
+                            <!-- Activity items will be added here -->
+                            <tr>
+                                <td>2023-08-30 14:25:30</td>
+                                <td>Agent</td>
+                                <td>Created agent "time_agent"</td>
+                                <td>Success</td>
+                            </tr>
+                            <tr>
+                                <td>2023-08-30 14:24:15</td>
+                                <td>Tool</td>
+                                <td>Registered tool "time_tools"</td>
+                                <td>Success</td>
+                            </tr>
+                            <tr>
+                                <td>2023-08-30 14:23:05</td>
+                                <td>MAS</td>
+                                <td>Started MAS instance "demo_mas"</td>
+                                <td>Success</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Agents Section -->
+            <div class="section" id="agents-section">
+                <div class="section-header">
+                    <h2>Agents</h2>
+                    <button class="create-btn" id="create-agent-btn">Create Agent</button>
+                </div>
+                <div class="search-filter">
+                    <input type="text" id="agent-search" placeholder="Search agents...">
+                    <select id="agent-type-filter">
+                        <option value="">All Types</option>
+                        <option value="react">ReAct Agent</option>
+                        <option value="chat">Chat Agent</option>
+                        <option value="workflow">Workflow Agent</option>
+                        <option value="local">Local Agent</option>
+                        <option value="parallel">Parallel Agent</option>
+                        <option value="remote">Remote Agent</option>
+                        <option value="sse">SSE Agent</option>
+                    </select>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="agent-list">
+                        <!-- Agent items will be added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tools Section -->
+            <div class="section" id="tools-section">
+                <div class="section-header">
+                    <h2>Tools</h2>
+                    <button class="create-btn" id="create-tool-btn">Create Tool</button>
+                </div>
+                <div class="search-filter">
+                    <input type="text" id="tool-search" placeholder="Search tools...">
+                    <select id="tool-type-filter">
+                        <option value="">All Types</option>
+                        <option value="function">Function Tool</option>
+                        <option value="mcp">MCP Tool</option>
+                        <option value="api">API Tool</option>
+                    </select>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tool-list">
+                        <!-- Tool items will be added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Workflows Section -->
+            <div class="section" id="workflows-section">
+                <div class="section-header">
+                    <h2>Workflows</h2>
+                    <button class="create-btn" id="create-workflow-btn">Create Workflow</button>
+                </div>
+                <div class="search-filter">
+                    <input type="text" id="workflow-search" placeholder="Search workflows...">
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Agents</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="workflow-list">
+                        <!-- Workflow items will be added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- MAS Instances Section -->
+            <div class="section" id="mas-section">
+                <div class="section-header">
+                    <h2>MAS Instances</h2>
+                    <button class="create-btn" id="create-mas-btn">Create MAS</button>
+                </div>
+                <div class="search-filter">
+                    <input type="text" id="mas-search" placeholder="Search MAS instances...">
+                    <select id="mas-status-filter">
+                        <option value="">All Statuses</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mas-list">
+                        <!-- MAS items will be added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- System Section -->
+            <div class="section" id="system-section">
+                <h2>System Configuration</h2>
+                <div class="system-config">
+                    <div class="config-section">
+                        <h3>LLM Configuration</h3>
+                        <div id="llm-config-list">
+                            <!-- LLM config items will be added here -->
+                        </div>
+                        <button class="add-btn" id="add-llm-btn">Add LLM</button>
+                    </div>
+                    <div class="config-section">
+                        <h3>Database Configuration</h3>
+                        <div id="db-config-list">
+                            <!-- Database config items will be added here -->
+                        </div>
+                        <button class="add-btn" id="add-db-btn">Add Database</button>
+                    </div>
+                    <div class="config-section">
+                        <h3>General Settings</h3>
+                        <form id="general-settings-form">
+                            <div class="form-group">
+                                <label for="log-level">Log Level</label>
+                                <select id="log-level">
+                                    <option value="DEBUG">DEBUG</option>
+                                    <option value="INFO">INFO</option>
+                                    <option value="WARNING">WARNING</option>
+                                    <option value="ERROR">ERROR</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="cache-dir">Cache Directory</label>
+                                <input type="text" id="cache-dir">
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="save-btn">Save Settings</button>
+                                <button type="button" class="reset-btn">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="system-actions">
+                    <button id="import-config-btn">Import Configuration</button>
+                    <button id="export-config-btn">Export Configuration</button>
+                    <button id="restart-system-btn" class="danger-btn">Restart System</button>
+                </div>
+            </div>
+
+            <!-- Documentation Section -->
+            <div class="section" id="docs-section">
+                <h2>Documentation</h2>
+                <div class="docs-container">
+                    <div class="docs-sidebar">
+                        <ul class="docs-menu">
+                            <li class="docs-item active" data-target="getting-started">Getting Started</li>
+                            <li class="docs-item" data-target="agents-docs">Agents</li>
+                            <li class="docs-item" data-target="tools-docs">Tools</li>
+                            <li class="docs-item" data-target="workflows-docs">Workflows</li>
+                            <li class="docs-item" data-target="mas-docs">MAS</li>
+                            <li class="docs-item" data-target="api-docs">API Reference</li>
+                        </ul>
+                    </div>
+                    <div class="docs-content">
+                        <div class="docs-section active" id="getting-started-docs">
+                            <h3>Getting Started</h3>
+                            <p>Welcome to the OxyGent Management Interface! This interface allows you to create, configure, and manage agents, tools, workflows, and MAS instances in the OxyGent framework.</p>
+                            <h4>Quick Start</h4>
+                            <ol>
+                                <li>Create a tool using the Tools section</li>
+                                <li>Create an agent using the Agents section</li>
+                                <li>Assign the tool to the agent</li>
+                                <li>Create a MAS instance with the agent</li>
+                                <li>Start the MAS instance</li>
+                            </ol>
+                        </div>
+                        <div class="docs-section" id="agents-docs">
+                            <h3>Agents</h3>
+                            <p>Agents are the core components of the OxyGent framework. They process user queries, use tools, and generate responses.</p>
+                            <h4>Agent Types</h4>
+                            <ul>
+                                <li><strong>ReAct Agent</strong>: An agent that uses the ReAct (Reasoning and Acting) paradigm</li>
+                                <li><strong>Chat Agent</strong>: A simple agent for chat interactions</li>
+                                <li><strong>Workflow Agent</strong>: An agent that executes a predefined workflow</li>
+                                <li><strong>Local Agent</strong>: An agent that runs locally</li>
+                                <li><strong>Parallel Agent</strong>: An agent that can execute tasks in parallel</li>
+                                <li><strong>Remote Agent</strong>: An agent that runs on a remote server</li>
+                                <li><strong>SSE Agent</strong>: An agent that uses Server-Sent Events for real-time updates</li>
+                            </ul>
+                        </div>
+                        <!-- Other documentation sections would be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Templates -->
+    <div class="modal" id="agent-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="agent-modal-title">Create Agent</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="agent-form">
+                    <div class="form-group">
+                        <label for="agent-name">Name</label>
+                        <input type="text" id="agent-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-type">Type</label>
+                        <select id="agent-type" required>
+                            <option value="react">ReAct Agent</option>
+                            <option value="chat">Chat Agent</option>
+                            <option value="workflow">Workflow Agent</option>
+                            <option value="local">Local Agent</option>
+                            <option value="parallel">Parallel Agent</option>
+                            <option value="remote">Remote Agent</option>
+                            <option value="sse">SSE Agent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-description">Description</label>
+                        <textarea id="agent-description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-is-master">Is Master</label>
+                        <input type="checkbox" id="agent-is-master">
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-tools">Tools</label>
+                        <select id="agent-tools" multiple>
+                            <!-- Tool options will be added here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-sub-agents">Sub Agents</label>
+                        <select id="agent-sub-agents" multiple>
+                            <!-- Agent options will be added here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-llm-model">LLM Model</label>
+                        <select id="agent-llm-model">
+                            <!-- LLM model options will be added here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-additional-prompt">Additional Prompt</label>
+                        <textarea id="agent-additional-prompt"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-timeout">Timeout (seconds)</label>
+                        <input type="number" id="agent-timeout" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-trust-mode">Trust Mode</label>
+                        <input type="checkbox" id="agent-trust-mode">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save</button>
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="tool-modal">
+        <!-- Similar structure to agent-modal, but for tools -->
+    </div>
+
+    <div class="modal" id="workflow-modal">
+        <!-- Similar structure to agent-modal, but for workflows -->
+    </div>
+
+    <div class="modal" id="mas-modal">
+        <!-- Similar structure to agent-modal, but for MAS instances -->
+    </div>
+
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <span class="toast-message">Operation successful!</span>
+        </div>
+    </div>
+</body>
+</html>
+
