@@ -2,10 +2,6 @@
 
 A comprehensive user interface for the OxyGent Multi-Agent Collaboration Framework, providing access to 100% of OxyGent's features and capabilities.
 
-## Overview
-
-The OxyGent Enhanced UI is a modern, responsive web application that provides a complete interface for managing the OxyGent Multi-Agent Collaboration Framework. It allows users to create, configure, and monitor agents, tools, and workflows, as well as manage system settings and performance.
-
 ## Features
 
 - **Agent Management**: Create, configure, and monitor agents

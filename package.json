@@ -1,0 +1,31 @@
+{
+  "name": "oxygent",
+  "version": "1.0.0",
+  "description": "OxyGent Multi-Agent Collaboration Framework",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd ui && npm start",
+    "build": "cd ui && npm run build",
+    "test": "cd ui && npm test",
+    "lint": "cd ui && npm run lint",
+    "install:ui": "cd ui && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jd-opensource/OxyGent.git"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "multi-agent",
+    "collaboration",
+    "framework"
+  ],
+  "author": "OxyGent Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jd-opensource/OxyGent/issues"
+  },
+  "homepage": "https://github.com/jd-opensource/OxyGent#readme"
+}
+
