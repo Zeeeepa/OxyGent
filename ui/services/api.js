@@ -113,6 +113,93 @@ export const workflowApi = {
     executeWorkflow: (workflowId, inputData) => api.post(`/api/workflows/${workflowId}/execute`, inputData),
 };
 
+// API endpoints for orchestration
+export const orchestrationApi = {
+    // Get all orchestrations
+    getOrchestrations: () => api.get('/api/orchestrations'),
+    
+    // Get orchestration by ID
+    getOrchestration: (orchestrationId) => api.get(`/api/orchestrations/${orchestrationId}`),
+    
+    // Create new orchestration
+    createOrchestration: (orchestrationData) => api.post('/api/orchestrations', orchestrationData),
+    
+    // Update orchestration
+    updateOrchestration: (orchestrationId, orchestrationData) => api.put(`/api/orchestrations/${orchestrationId}`, orchestrationData),
+    
+    // Delete orchestration
+    deleteOrchestration: (orchestrationId) => api.delete(`/api/orchestrations/${orchestrationId}`),
+    
+    // Get orchestration types
+    getOrchestrationTypes: () => api.get('/api/orchestration-types'),
+    
+    // Start orchestration
+    startOrchestration: (orchestrationId) => api.post(`/api/orchestrations/${orchestrationId}/start`),
+    
+    // Pause orchestration
+    pauseOrchestration: (orchestrationId) => api.post(`/api/orchestrations/${orchestrationId}/pause`),
+    
+    // Stop orchestration
+    stopOrchestration: (orchestrationId) => api.post(`/api/orchestrations/${orchestrationId}/stop`),
+    
+    // Get orchestration events
+    getOrchestrationEvents: (orchestrationId, params) => api.get(`/api/orchestrations/${orchestrationId}/events`, { params }),
+    
+    // Get orchestration metrics
+    getOrchestrationMetrics: (orchestrationId) => api.get(`/api/orchestrations/${orchestrationId}/metrics`),
+    
+    // Get orchestration logs
+    getOrchestrationLogs: (orchestrationId, params) => api.get(`/api/orchestrations/${orchestrationId}/logs`, { params }),
+};
+
+// API endpoints for flows
+export const flowApi = {
+    // Get all flows
+    getFlows: () => api.get('/api/flows'),
+    
+    // Get flow by ID
+    getFlow: (flowId) => api.get(`/api/flows/${flowId}`),
+    
+    // Create new flow
+    createFlow: (flowData) => api.post('/api/flows', flowData),
+    
+    // Update flow
+    updateFlow: (flowId, flowData) => api.put(`/api/flows/${flowId}`, flowData),
+    
+    // Delete flow
+    deleteFlow: (flowId) => api.delete(`/api/flows/${flowId}`),
+    
+    // Get flow types
+    getFlowTypes: () => api.get('/api/flow-types'),
+    
+    // Execute flow
+    executeFlow: (flowId, inputData) => api.post(`/api/flows/${flowId}/execute`, inputData),
+    
+    // Get flow execution status
+    getFlowExecutionStatus: (executionId) => api.get(`/api/flow-executions/${executionId}`),
+    
+    // Get flow execution results
+    getFlowExecutionResults: (executionId) => api.get(`/api/flow-executions/${executionId}/results`),
+};
+
+// API endpoints for events
+export const eventApi = {
+    // Get all events
+    getEvents: (params) => api.get('/api/events', { params }),
+    
+    // Get event by ID
+    getEvent: (eventId) => api.get(`/api/events/${eventId}`),
+    
+    // Get event types
+    getEventTypes: () => api.get('/api/event-types'),
+    
+    // Get events by agent
+    getAgentEvents: (agentId, params) => api.get(`/api/agents/${agentId}/events`, { params }),
+    
+    // Get events by tool
+    getToolEvents: (toolId, params) => api.get(`/api/tools/${toolId}/events`, { params }),
+};
+
 // API endpoints for system
 export const systemApi = {
     // Get system info
@@ -138,6 +225,36 @@ export const systemApi = {
     
     // Update database connection
     updateDatabaseConnection: (connectionId, connectionData) => api.put(`/api/system/database-connections/${connectionId}`, connectionData),
+};
+
+// API endpoints for MAS (Multi-Agent System)
+export const masApi = {
+    // Get all MAS instances
+    getMASInstances: () => api.get('/api/mas'),
+    
+    // Get MAS instance by ID
+    getMASInstance: (masId) => api.get(`/api/mas/${masId}`),
+    
+    // Create new MAS instance
+    createMASInstance: (masData) => api.post('/api/mas', masData),
+    
+    // Update MAS instance
+    updateMASInstance: (masId, masData) => api.put(`/api/mas/${masId}`, masData),
+    
+    // Delete MAS instance
+    deleteMASInstance: (masId) => api.delete(`/api/mas/${masId}`),
+    
+    // Start MAS instance
+    startMASInstance: (masId) => api.post(`/api/mas/${masId}/start`),
+    
+    // Stop MAS instance
+    stopMASInstance: (masId) => api.post(`/api/mas/${masId}/stop`),
+    
+    // Get MAS metrics
+    getMASMetrics: (masId) => api.get(`/api/mas/${masId}/metrics`),
+    
+    // Get MAS events
+    getMASEvents: (masId, params) => api.get(`/api/mas/${masId}/events`, { params }),
 };
 
 // API endpoints for organization

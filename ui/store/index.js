@@ -6,6 +6,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import agentsReducer from './reducers/agentsReducer';
 import toolsReducer from './reducers/toolsReducer';
 import workflowsReducer from './reducers/workflowsReducer';
+import orchestrationReducer from './reducers/orchestrationReducer';
 import systemReducer from './reducers/systemReducer';
 import uiReducer from './reducers/uiReducer';
 import authReducer from './reducers/authReducer';
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     agents: agentsReducer,
     tools: toolsReducer,
     workflows: workflowsReducer,
+    orchestration: orchestrationReducer,
     system: systemReducer,
     ui: uiReducer,
     auth: authReducer,

@@ -20,6 +20,9 @@ import WorkflowDesigner from './modules/workflows/WorkflowDesigner';
 import WorkflowMonitoring from './modules/workflows/WorkflowMonitoring';
 import SystemConfiguration from './modules/system/SystemConfiguration';
 import PerformanceMonitoring from './modules/system/PerformanceMonitoring';
+import OrchestrationDashboard from './modules/orchestration/OrchestrationDashboard';
+import OrchestrationCreation from './modules/orchestration/OrchestrationCreation';
+import OrchestrationDetail from './modules/orchestration/OrchestrationDetail';
 
 // Actions
 import { fetchAgentOrganization, fetchSystemInfo } from './services/api';
@@ -62,6 +65,11 @@ const App = () => {
                 <Route path="/workflows/create" element={<WorkflowDesigner />} />
                 <Route path="/workflows/:workflowId" element={<WorkflowDesigner />} />
                 <Route path="/workflows/:workflowId/monitor" element={<WorkflowMonitoring />} />
+                
+                {/* Orchestration routes */}
+                <Route path="/orchestrations" element={<OrchestrationDashboard />} />
+                <Route path="/orchestrations/create" element={<OrchestrationCreation />} />
+                <Route path="/orchestrations/:orchestrationId" element={<OrchestrationDetail />} />
                 
                 {/* System routes */}
                 <Route path="/system/configuration" element={<SystemConfiguration />} />

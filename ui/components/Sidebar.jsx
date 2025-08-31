@@ -10,6 +10,7 @@ const Sidebar = () => {
     const agentCount = useSelector(state => state.agents.items.length);
     const toolCount = useSelector(state => state.tools.items.length);
     const workflowCount = useSelector(state => state.workflows.items.length);
+    const orchestrationCount = useSelector(state => state.orchestration ? state.orchestration.items.length : 0);
     
     // Toggle sidebar expansion
     const toggleSidebar = () => {
@@ -19,7 +20,7 @@ const Sidebar = () => {
     return (
         <aside className={`sidebar ${expanded ? 'expanded' : 'collapsed'}`}>
             <div className="sidebar-toggle" onClick={toggleSidebar}>
-                {expanded ? '◀' : '▶'}
+                {expanded ? '\u25c0' : '\u25b6'}
             </div>
             
             <nav className="sidebar-nav">
@@ -28,7 +29,7 @@ const Sidebar = () => {
                     <li className="nav-item">
                         <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
                             <span className="nav-icon">📊</span>
-                            <span className="nav-text">Dashboard</span>
+                            {expanded && <span className="nav-text">Dashboard</span>}
                         </NavLink>
                     </li>
                     
@@ -36,9 +37,13 @@ const Sidebar = () => {
                     <li className="nav-item">
                         <NavLink to="/agents" className={({ isActive }) => isActive ? 'active' : ''}>
                             <span className="nav-icon">🤖</span>
-                            <span className="nav-text">Agents</span>
-                            {agentCount > 0 && (
-                                <span className="nav-badge">{agentCount}</span>
+                            {expanded && (
+                                <span className="nav-text">
+                                    Agents
+                                    {agentCount > 0 && (
+                                        <span className="nav-badge">{agentCount}</span>
+                                    )}
+                                </span>
                             )}
                         </NavLink>
                     </li>
@@ -47,9 +52,13 @@ const Sidebar = () => {
                     <li className="nav-item">
                         <NavLink to="/tools" className={({ isActive }) => isActive ? 'active' : ''}>
                             <span className="nav-icon">🔧</span>
-                            <span className="nav-text">Tools</span>
-                            {toolCount > 0 && (
-                                <span className="nav-badge">{toolCount}</span>
+                            {expanded && (
+                                <span className="nav-text">
+                                    Tools
+                                    {toolCount > 0 && (
+                                        <span className="nav-badge">{toolCount}</span>
+                                    )}
+                                </span>
                             )}
                         </NavLink>
                     </li>
@@ -57,42 +66,53 @@ const Sidebar = () => {
                     {/* Workflows */}
                     <li className="nav-item">
                         <NavLink to="/workflows" className={({ isActive }) => isActive ? 'active' : ''}>
-                            <span className="nav-icon">🔄</span>
-                            <span className="nav-text">Workflows</span>
-                            {workflowCount > 0 && (
-                                <span className="nav-badge">{workflowCount}</span>
+                            <span className="nav-icon">📝</span>
+                            {expanded && (
+                                <span className="nav-text">
+                                    Workflows
+                                    {workflowCount > 0 && (
+                                        <span className="nav-badge">{workflowCount}</span>
+                                    )}
+                                </span>
+                            )}
+                        </NavLink>
+                    </li>
+                    
+                    {/* Orchestration */}
+                    <li className="nav-item">
+                        <NavLink to="/orchestrations" className={({ isActive }) => isActive ? 'active' : ''}>
+                            <span className="nav-icon">🎭</span>
+                            {expanded && (
+                                <span className="nav-text">
+                                    Orchestration
+                                    {orchestrationCount > 0 && (
+                                        <span className="nav-badge">{orchestrationCount}</span>
+                                    )}
+                                </span>
                             )}
                         </NavLink>
                     </li>
                     
                     {/* System */}
-                    <li className="nav-item nav-item-expandable">
-                        <div className="nav-item-header">
+                    <li className="nav-section">
+                        {expanded && <span className="nav-section-title">System</span>}
+                    </li>
+                    
+                    <li className="nav-item">
+                        <NavLink to="/system/configuration" className={({ isActive }) => isActive ? 'active' : ''}>
                             <span className="nav-icon">⚙️</span>
-                            <span className="nav-text">System</span>
-                        </div>
-                        <ul className="nav-sublist">
-                            <li className="nav-subitem">
-                                <NavLink to="/system/configuration" className={({ isActive }) => isActive ? 'active' : ''}>
-                                    <span className="nav-text">Configuration</span>
-                                </NavLink>
-                            </li>
-                            <li className="nav-subitem">
-                                <NavLink to="/system/monitoring" className={({ isActive }) => isActive ? 'active' : ''}>
-                                    <span className="nav-text">Monitoring</span>
-                                </NavLink>
-                            </li>
-                        </ul>
+                            {expanded && <span className="nav-text">Configuration</span>}
+                        </NavLink>
+                    </li>
+                    
+                    <li className="nav-item">
+                        <NavLink to="/system/monitoring" className={({ isActive }) => isActive ? 'active' : ''}>
+                            <span className="nav-icon">📈</span>
+                            {expanded && <span className="nav-text">Monitoring</span>}
+                        </NavLink>
                     </li>
                 </ul>
             </nav>
-            
-            <div className="sidebar-footer">
-                <a href="http://oxygent.jd.com" target="_blank" rel="noopener noreferrer" className="docs-link">
-                    <span className="nav-icon">📚</span>
-                    <span className="nav-text">Documentation</span>
-                </a>
-            </div>
         </aside>
     );
 };
