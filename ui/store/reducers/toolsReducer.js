@@ -5,7 +5,6 @@ const initialState = {
     toolTypes: [],
     loading: false,
     error: null,
-    testResult: null,
 };
 
 // Reducer
@@ -36,7 +35,6 @@ const toolsReducer = (state = initialState, action) => {
         case 'FETCH_TOOL_REQUEST':
             return {
                 ...state,
-                selectedTool: null,
                 loading: true,
                 error: null,
             };
@@ -48,6 +46,27 @@ const toolsReducer = (state = initialState, action) => {
                 error: null,
             };
         case 'FETCH_TOOL_FAILURE':
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+            
+        // Fetch tool types
+        case 'FETCH_TOOL_TYPES_REQUEST':
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
+        case 'FETCH_TOOL_TYPES_SUCCESS':
+            return {
+                ...state,
+                toolTypes: action.payload,
+                loading: false,
+                error: null,
+            };
+        case 'FETCH_TOOL_TYPES_FAILURE':
             return {
                 ...state,
                 loading: false,
@@ -86,8 +105,8 @@ const toolsReducer = (state = initialState, action) => {
         case 'UPDATE_TOOL_SUCCESS':
             return {
                 ...state,
-                items: state.items.map(tool => 
-                    tool.id === action.payload.id ? action.payload : tool
+                items: state.items.map(item => 
+                    item.id === action.payload.id ? action.payload : item
                 ),
                 selectedTool: action.payload,
                 loading: false,
@@ -110,8 +129,8 @@ const toolsReducer = (state = initialState, action) => {
         case 'DELETE_TOOL_SUCCESS':
             return {
                 ...state,
-                items: state.items.filter(tool => tool.id !== action.payload),
-                selectedTool: null,
+                items: state.items.filter(item => item.id !== action.payload),
+                selectedTool: state.selectedTool && state.selectedTool.id === action.payload ? null : state.selectedTool,
                 loading: false,
                 error: null,
             };
@@ -122,55 +141,54 @@ const toolsReducer = (state = initialState, action) => {
                 error: action.payload,
             };
             
-        // Fetch tool types
-        case 'FETCH_TOOL_TYPES_REQUEST':
+        // Activate tool
+        case 'ACTIVATE_TOOL_REQUEST':
             return {
                 ...state,
                 loading: true,
                 error: null,
             };
-        case 'FETCH_TOOL_TYPES_SUCCESS':
+        case 'ACTIVATE_TOOL_SUCCESS':
             return {
                 ...state,
-                toolTypes: action.payload,
+                items: state.items.map(item => 
+                    item.id === action.payload.id ? { ...item, isActive: true } : item
+                ),
+                selectedTool: state.selectedTool && state.selectedTool.id === action.payload.id ? 
+                    { ...state.selectedTool, isActive: true } : state.selectedTool,
                 loading: false,
                 error: null,
             };
-        case 'FETCH_TOOL_TYPES_FAILURE':
+        case 'ACTIVATE_TOOL_FAILURE':
             return {
                 ...state,
                 loading: false,
                 error: action.payload,
             };
             
-        // Test tool
-        case 'TEST_TOOL_REQUEST':
+        // Deactivate tool
+        case 'DEACTIVATE_TOOL_REQUEST':
             return {
                 ...state,
                 loading: true,
                 error: null,
-                testResult: null,
             };
-        case 'TEST_TOOL_SUCCESS':
+        case 'DEACTIVATE_TOOL_SUCCESS':
             return {
                 ...state,
-                testResult: action.payload,
+                items: state.items.map(item => 
+                    item.id === action.payload.id ? { ...item, isActive: false } : item
+                ),
+                selectedTool: state.selectedTool && state.selectedTool.id === action.payload.id ? 
+                    { ...state.selectedTool, isActive: false } : state.selectedTool,
                 loading: false,
                 error: null,
             };
-        case 'TEST_TOOL_FAILURE':
+        case 'DEACTIVATE_TOOL_FAILURE':
             return {
                 ...state,
                 loading: false,
                 error: action.payload,
-                testResult: null,
-            };
-            
-        // Clear test result
-        case 'CLEAR_TOOL_TEST_RESULT':
-            return {
-                ...state,
-                testResult: null,
             };
             
         default:
