@@ -5,7 +5,6 @@ const initialState = {
     agentTypes: [],
     loading: false,
     error: null,
-    organization: null,
 };
 
 // Reducer
@@ -36,7 +35,6 @@ const agentsReducer = (state = initialState, action) => {
         case 'FETCH_AGENT_REQUEST':
             return {
                 ...state,
-                selectedAgent: null,
                 loading: true,
                 error: null,
             };
@@ -48,6 +46,27 @@ const agentsReducer = (state = initialState, action) => {
                 error: null,
             };
         case 'FETCH_AGENT_FAILURE':
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+            
+        // Fetch agent types
+        case 'FETCH_AGENT_TYPES_REQUEST':
+            return {
+                ...state,
+                loading: true,
+                error: null,
+            };
+        case 'FETCH_AGENT_TYPES_SUCCESS':
+            return {
+                ...state,
+                agentTypes: action.payload,
+                loading: false,
+                error: null,
+            };
+        case 'FETCH_AGENT_TYPES_FAILURE':
             return {
                 ...state,
                 loading: false,
@@ -86,8 +105,8 @@ const agentsReducer = (state = initialState, action) => {
         case 'UPDATE_AGENT_SUCCESS':
             return {
                 ...state,
-                items: state.items.map(agent => 
-                    agent.id === action.payload.id ? action.payload : agent
+                items: state.items.map(item => 
+                    item.id === action.payload.id ? action.payload : item
                 ),
                 selectedAgent: action.payload,
                 loading: false,
@@ -110,8 +129,8 @@ const agentsReducer = (state = initialState, action) => {
         case 'DELETE_AGENT_SUCCESS':
             return {
                 ...state,
-                items: state.items.filter(agent => agent.id !== action.payload),
-                selectedAgent: null,
+                items: state.items.filter(item => item.id !== action.payload),
+                selectedAgent: state.selectedAgent && state.selectedAgent.id === action.payload ? null : state.selectedAgent,
                 loading: false,
                 error: null,
             };
@@ -122,42 +141,50 @@ const agentsReducer = (state = initialState, action) => {
                 error: action.payload,
             };
             
-        // Fetch agent types
-        case 'FETCH_AGENT_TYPES_REQUEST':
+        // Activate agent
+        case 'ACTIVATE_AGENT_REQUEST':
             return {
                 ...state,
                 loading: true,
                 error: null,
             };
-        case 'FETCH_AGENT_TYPES_SUCCESS':
+        case 'ACTIVATE_AGENT_SUCCESS':
             return {
                 ...state,
-                agentTypes: action.payload,
+                items: state.items.map(item => 
+                    item.id === action.payload.id ? { ...item, isActive: true } : item
+                ),
+                selectedAgent: state.selectedAgent && state.selectedAgent.id === action.payload.id ? 
+                    { ...state.selectedAgent, isActive: true } : state.selectedAgent,
                 loading: false,
                 error: null,
             };
-        case 'FETCH_AGENT_TYPES_FAILURE':
+        case 'ACTIVATE_AGENT_FAILURE':
             return {
                 ...state,
                 loading: false,
                 error: action.payload,
             };
             
-        // Fetch agent organization
-        case 'FETCH_AGENT_ORGANIZATION_REQUEST':
+        // Deactivate agent
+        case 'DEACTIVATE_AGENT_REQUEST':
             return {
                 ...state,
                 loading: true,
                 error: null,
             };
-        case 'FETCH_AGENT_ORGANIZATION_SUCCESS':
+        case 'DEACTIVATE_AGENT_SUCCESS':
             return {
                 ...state,
-                organization: action.payload.organization,
+                items: state.items.map(item => 
+                    item.id === action.payload.id ? { ...item, isActive: false } : item
+                ),
+                selectedAgent: state.selectedAgent && state.selectedAgent.id === action.payload.id ? 
+                    { ...state.selectedAgent, isActive: false } : state.selectedAgent,
                 loading: false,
                 error: null,
             };
-        case 'FETCH_AGENT_ORGANIZATION_FAILURE':
+        case 'DEACTIVATE_AGENT_FAILURE':
             return {
                 ...state,
                 loading: false,
